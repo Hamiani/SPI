@@ -16,7 +16,7 @@
 }
 
 .ant-layout-footer {
-  background-color: black;
+  background-color: #011529;
 }
 
 .footer {
@@ -40,8 +40,8 @@
 }
 
 .connected {
-  background-color: #FAFAFA;
+  background-color: #fafafa;
 }
 .disconnected {
-  background-color: #000000
+  background-color: #000000;
 }

@@ -235,3 +235,7 @@ code {
   background-color: #087924;
   color: #fff;
 }
+
+.ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected {
+  background-color: #259197;
+}
