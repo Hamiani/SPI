@@ -11,6 +11,7 @@ import {
   Collapse,
   Tag,
 } from "antd";
+import { EyeOutlined } from "@ant-design/icons";
 
 import Unknown from "../../../Shared/Unknown";
 import Loading from "../../../Shared/Loading";
@@ -30,9 +31,17 @@ const onSuccessCallBack = () =>
 const onErrorCallBack = () =>
   notification.error({ message: "Une erreur est survenue" });
 
-const View = ({ candidatQuery, removeQuery, onRemove, onGoBack }) => {
+const View = ({
+  candidatQuery,
+  removeQuery,
+  onRemove,
+  onGoBack,
+  onShowPromo,
+  onShowFormation,
+  onShowTeacher,
+}) => {
   const { idle, data, loading, errors } = candidatQuery;
-  // const { loading: removeLoading } = removeQuery;
+  const { loading: removeLoading } = removeQuery;
 
   if (idle || loading) return <Loading />;
   if (errors) return <Unknown />;
@@ -239,121 +248,148 @@ const View = ({ candidatQuery, removeQuery, onRemove, onGoBack }) => {
     },
   ];
 
+  const formationExtra = (id) => (
+    <EyeOutlined
+      onClick={(e) => {
+        onShowFormation(id);
+        e.stopPropagation();
+      }}
+    />
+  );
+
+  const teacherExtra = (id) => (
+    <EyeOutlined
+      onClick={(e) => {
+        onShowTeacher(id);
+        e.stopPropagation();
+      }}
+    />
+  );
+
+  const promotionExtra = (filter) => {
+    console.log("filter :>> ", filter);
+    return (
+      <EyeOutlined
+        onClick={(e) => {
+          onShowPromo(filter);
+          e.stopPropagation();
+        }}
+      />
+    );
+  };
+
   return (
     <div className="container__antd">
       <Col span={24}>
-        <div className="m-top-10" />
-        <div>
-          <Card className="card">
-            <div justify="space-between">
-              <div className="head_bloc">
-                <h1 className="h1">DÉTAIL</h1>
-                <div className="button_bloc">
-                  <Button className="back_button" onClick={onGoBack}>
-                    Retour
+        <Card className="card">
+          <div justify="space-between">
+            <div className="head_bloc">
+              <h1 className="h1">DÉTAIL</h1>
+              <div className="button_bloc">
+                <Button className="back_button" onClick={onGoBack}>
+                  Retour
+                </Button>
+                <Popconfirm
+                  placement="topRight"
+                  title={"Voulez-vous vraiment supprimer ce candidat ?"}
+                  onConfirm={() =>
+                    onRemove(data, onSuccessCallBack, onErrorCallBack)
+                  }
+                  okText="Confirmer"
+                  cancelText="Cancel"
+                >
+                  <Button loading={removeLoading} className="delete_button">
+                    Supprimer
                   </Button>
-                  <Popconfirm
-                    placement="topRight"
-                    title={"Voulez-vous vraiment supprimer ce candidat ?"}
-                    onConfirm={() =>
-                      onRemove(data, onSuccessCallBack, onErrorCallBack)
-                    }
-                    okText="Confirmer"
-                    cancelText="Cancel"
-                  >
-                    <Button className="delete_button">Supprimer</Button>
-                  </Popconfirm>
-                </div>
+                </Popconfirm>
               </div>
             </div>
-            <Divider />
-            <Collapse accordion defaultActiveKey={["1"]}>
-              <Panel header="Détail de Candidat" key="1">
-                <Row type="flex" justify="space-between">
-                  {candidatsTopItems.map(({ title, content }, index) => (
-                    <Detail key={index} title={title} content={content} />
-                  ))}
-                </Row>
-                <Divider />
-                <Row type="flex" justify="space-between">
-                  {candidatsBottomItems.map(({ title, content }, index) => (
-                    <Detail key={index} title={title} content={content} />
-                  ))}
-                </Row>
-                <Collapse>
-                  <Panel header={<Tag color="blue">Promotion</Tag>} key="1">
-                    <Row type="flex" justify="space-between">
-                      {promotionsTopItems.map(({ title, content }, index) => (
-                        <Detail key={index} title={title} content={content} />
-                      ))}
-                    </Row>
-                    <Divider />
-                    <Row type="flex" justify="space-between">
-                      {promotionsBottomItems.map(
-                        ({ title, content }, index) => (
-                          <Detail key={index} title={title} content={content} />
-                        )
+          </div>
+          <Divider />
+          <Collapse accordion defaultActiveKey={["1"]}>
+            <Panel header="Détail de Candidat" key="1">
+              <Row type="flex" justify="space-between">
+                {candidatsTopItems.map(({ title, content }, index) => (
+                  <Detail key={index} title={title} content={content} />
+                ))}
+              </Row>
+              <Divider />
+              <Row type="flex" justify="space-between">
+                {candidatsBottomItems.map(({ title, content }, index) => (
+                  <Detail key={index} title={title} content={content} />
+                ))}
+              </Row>
+              <Collapse activeKey={1}>
+                <Panel
+                  header={<Tag color="blue">Promotion</Tag>}
+                  key="1"
+                  extra={promotionExtra({
+                    year: get(data, "promotion.id.anneeUniversitaire"),
+                    code: get(data, "promotion.id.codeFormation"),
+                  })}
+                >
+                  <Row type="flex" justify="space-between">
+                    {promotionsTopItems.map(({ title, content }, index) => (
+                      <Detail key={index} title={title} content={content} />
+                    ))}
+                  </Row>
+                  <Divider />
+                  <Row type="flex" justify="space-between">
+                    {promotionsBottomItems.map(({ title, content }, index) => (
+                      <Detail key={index} title={title} content={content} />
+                    ))}
+                  </Row>
+                  <Collapse>
+                    <Panel
+                      header={<Tag color="pink">Formation</Tag>}
+                      key="1"
+                      extra={formationExtra(
+                        get(data, "promotion.formation.codeFormation")
                       )}
-                    </Row>
-                    <Collapse>
-                      <Panel header={<Tag color="pink">Formation</Tag>} key="1">
-                        <Row type="flex" justify="space-between">
-                          {formationsTopItems.map(
-                            ({ title, content }, index) => (
-                              <Detail
-                                key={index}
-                                title={title}
-                                content={content}
-                              />
-                            )
-                          )}
-                        </Row>
-                        <Divider />
-                        <Row type="flex" justify="space-between">
-                          {formationsBottomItems.map(
-                            ({ title, content }, index) => (
-                              <Detail
-                                key={index}
-                                title={title}
-                                content={content}
-                              />
-                            )
-                          )}
-                        </Row>
-                      </Panel>
-                      <Panel
-                        header={<Tag color="cyan">Enseignant</Tag>}
-                        key="2"
-                      >
-                        <Row type="flex" justify="space-between">
-                          {teacherTopItems.map(({ title, content }, index) => (
+                    >
+                      <Row type="flex" justify="space-between">
+                        {formationsTopItems.map(({ title, content }, index) => (
+                          <Detail key={index} title={title} content={content} />
+                        ))}
+                      </Row>
+                      <Divider />
+                      <Row type="flex" justify="space-between">
+                        {formationsBottomItems.map(
+                          ({ title, content }, index) => (
                             <Detail
                               key={index}
                               title={title}
                               content={content}
                             />
-                          ))}
-                        </Row>
-                        <Divider />
-                        <Row type="flex" justify="space-between">
-                          {teacherBottomItems.map(
-                            ({ title, content }, index) => (
-                              <Detail
-                                key={index}
-                                title={title}
-                                content={content}
-                              />
-                            )
-                          )}
-                        </Row>
-                      </Panel>
-                    </Collapse>
-                  </Panel>
-                </Collapse>
-              </Panel>
-            </Collapse>
-          </Card>
-        </div>
+                          )
+                        )}
+                      </Row>
+                    </Panel>
+                    <Panel
+                      header={<Tag color="cyan">Enseignant</Tag>}
+                      key="2"
+                      extra={teacherExtra(
+                        get(data, "promotion.enseignant.noEnseignant")
+                      )}
+                    >
+                      <Row type="flex" justify="space-between">
+                        {teacherTopItems.map(({ title, content }, index) => (
+                          <Detail key={index} title={title} content={content} />
+                        ))}
+                      </Row>
+                      <Divider />
+                      <Row type="flex" justify="space-between">
+                        {teacherBottomItems.map(({ title, content }, index) => (
+                          <Detail key={index} title={title} content={content} />
+                        ))}
+                      </Row>
+                    </Panel>
+                  </Collapse>
+                </Panel>
+              </Collapse>
+            </Panel>
+          </Collapse>
+        </Card>
       </Col>
     </div>
   );

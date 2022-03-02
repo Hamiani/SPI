@@ -14,6 +14,7 @@ const Detail = () => {
   const dispatch = useDispatch();
   const { goBack, push } = useHistory();
   const candidatQuery = useSelector((state) => state.candidat.getOne);
+  const removeQuery = useSelector((state) => state.candidat.remove);
 
   const onGoBack = () => goBack();
   const onRemove = (data, onSuccessCallBack, onErrorCallBack) =>
@@ -27,11 +28,30 @@ const Detail = () => {
         () => onErrorCallBack()
       )
     );
+
+  const onShowPromo = ({ year, code }) =>
+    push(`${PATHS.PROMOTIONS.LIST}/${code}/${year}`);
+
+  const onShowFormation = (id) => push(`${PATHS.FORMATIONS.LIST}/${id}`);
+  const onShowTeacher = (id) => push(`${PATHS.TEACHERS.LIST}/${id}`);
+
   useEffect(() => {
     dispatch(getOne(id));
   }, [dispatch, id]);
 
-  return <View {...{ candidatQuery, onGoBack, onRemove }} />;
+  return (
+    <View
+      {...{
+        candidatQuery,
+        removeQuery,
+        onGoBack,
+        onRemove,
+        onShowPromo,
+        onShowFormation,
+        onShowTeacher,
+      }}
+    />
+  );
 };
 
 export default Detail;
