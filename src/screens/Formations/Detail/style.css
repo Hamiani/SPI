@@ -1,0 +1,10 @@
+.formation_head_bloc {
+  display: flex;
+  justify-content: space-between;
+}
+
+.formation_button_bloc {
+  display: flex;
+  justify-content: space-between;
+  width: 290px
+}
