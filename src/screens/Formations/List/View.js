@@ -10,6 +10,7 @@ import {
   Menu,
   Popconfirm,
 } from "antd";
+
 import {
   EditOutlined,
   DownOutlined,
@@ -56,15 +57,18 @@ const columns = ({ onShow, onRemove, onUpdate }) => [
     title: "Code",
     dataIndex: "codeFormation",
     key: "codeFormation",
-    render: (codeFormation) => <Tag color="magenta">{codeFormation}</Tag>,
   },
   {
     title: "Nom De Formation",
     dataIndex: "nomFormation",
     key: "nomFormation",
-    render: (nom) => <Tag color="green">{nom}</Tag>,
   },
   {
+    title: "Diplôme",
+    dataIndex: "diplome",
+    key: "diplome",
+  },
+  { 
     title: "Actions",
     dataIndex: "actions",
     key: "actions",

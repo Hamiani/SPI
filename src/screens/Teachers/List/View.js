@@ -19,7 +19,7 @@ import Loading from "../../../Shared/Loading";
 import { isEvenNumber } from "../../../utils/helpers";
 import Unknown from "../../../Shared/Unknown";
 
-import './style.css'
+import "./style.css";
 
 const onSuccessCallBack = () =>
   notification.success({ message: "Supprimé avec Succès" });
@@ -54,31 +54,16 @@ const columns = ({ onShow, onRemove }) => [
     title: "Nom",
     dataIndex: "nom",
     key: "nom",
-    render: (nom) => (
-      <Tag className="tag" color="magenta">
-        {nom}
-      </Tag>
-    ),
   },
   {
     title: "Prénom",
     dataIndex: "prenom",
     key: "prenom",
-    render: (prenom) => (
-      <Tag className="tag" color="green">
-        {prenom}
-      </Tag>
-    ),
   },
   {
     title: "Email",
     dataIndex: "emailUbo",
     key: "emailUbo",
-    render: (email) => (
-      <Tag className="tag-email" color="blue">
-        {email}
-      </Tag>
-    ),
   },
   {
     title: "Actions",

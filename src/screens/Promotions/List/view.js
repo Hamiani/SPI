@@ -38,7 +38,7 @@ const View = ({ promotionsQuery, onShow, onCreate }) => {
               title={
                 <div className="text-center">
                   <Badge
-                    status="success"
+                    status="processing"
                     size="default"
                     count={promotion.nbMaxEtudiant}
                   >
@@ -55,7 +55,7 @@ const View = ({ promotionsQuery, onShow, onCreate }) => {
               <Row justify="space-between">
                 <Col>Année universitaire</Col>
                 <Col>
-                  <Tag className="tag" color={"cyan"}>
+                  <Tag className="tag" color="#419197">
                     {get(promotion, "id.anneeUniversitaire")}
                   </Tag>
                 </Col>
@@ -63,7 +63,7 @@ const View = ({ promotionsQuery, onShow, onCreate }) => {
               <Row justify="space-between" className="p-top-10">
                 <Col>Formation</Col>
                 <Col>
-                  <Tag className="tag" color={"cyan"}>
+                  <Tag className="tag" color="#419197">
                     {get(promotion, "id.codeFormation")}
                   </Tag>
                 </Col>

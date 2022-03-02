@@ -23,31 +23,16 @@ const columns = ({ onShow }) => [
     title: "Nom",
     dataIndex: "nom",
     key: "nom",
-    render: (nom) => (
-      <Tag className="tag" color="magenta">
-        {nom}
-      </Tag>
-    ),
   },
   {
     title: "Prénom",
     dataIndex: "prenom",
     key: "prenom",
-    render: (prenom) => (
-      <Tag className="tag" color="green">
-        {prenom}
-      </Tag>
-    ),
   },
   {
     title: "Email",
     dataIndex: "email",
     key: "email",
-    render: (email) => (
-      <Tag className="tag-email" color="blue">
-        {email}
-      </Tag>
-    ),
   },
   {
     title: "Actions",
